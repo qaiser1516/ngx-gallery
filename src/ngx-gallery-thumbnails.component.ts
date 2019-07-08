@@ -59,7 +59,7 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
     private index = 0;
 
     constructor(private sanitization: DomSanitizer, private elementRef: ElementRef,
-        private helperService: NgxGalleryHelperService) {}
+        private helperService: NgxGalleryHelperService) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['selectedIndex']) {
@@ -68,7 +68,7 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
 
         if (changes['swipe']) {
             this.helperService.manageSwipe(this.swipe, this.elementRef,
-            'thumbnails', () => this.moveRight(), () => this.moveLeft());
+                'thumbnails', () => this.moveRight(), () => this.moveLeft());
         }
 
         if (this.images) {
@@ -99,7 +99,7 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
 
         if (this.remainingCount) {
             return this.images.slice(0, this.rows * this.columns);
-        } 
+        }
         else if (this.lazyLoading && this.order != NgxGalleryOrder.Row) {
             let stopIndex = 0;
 
@@ -117,7 +117,7 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
             }
 
             return this.images.slice(0, stopIndex);
-        } 
+        }
         else {
             return this.images;
         }
@@ -171,6 +171,9 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
     }
 
     getThumbnailLeft(index: number): SafeStyle {
+        if (document.dir.toLowerCase() === 'rtl')
+            return;
+        
         let calculatedIndex;
 
         if (this.order === NgxGalleryOrder.Column) {
@@ -220,7 +223,7 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
         this.thumbnailsLeft = - ((100 / this.columns) * this.index) + '%'
 
         this.thumbnailsMarginLeft = - ((this.margin - (((this.columns - 1)
-        * this.margin) / this.columns)) * this.index) + 'px';
+            * this.margin) / this.columns)) * this.index) + 'px';
     }
 
     setDefaultPosition(): void {
